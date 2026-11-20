@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام دانش‌آموز در کلاس</title>
+</head>
+<body>
+
+    <h1>فرم ثبت‌نام دانش‌آموز در کلاس</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">ثبت‌نام دانش‌آموز</button>
+    </form>
+
+    <p>
+        <a href="{% url 'student_list' %}">بازگشت به فهرست دانش‌آموزان</a>
+    </p>
+
+</body>
+</html>

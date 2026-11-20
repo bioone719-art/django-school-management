@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>گزارش مالی مدرسه</title>
+
+    <style>
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #263238;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .card h3 {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .amount {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .green { color: #16834a; }
+        .blue { color: #1769aa; }
+        .red { color: #c62828; }
+
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .status p {
+            display: inline-block;
+            margin: 10px 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        th, td {
+            padding: 13px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #263b50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f5f8;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>گزارش مالی مدرسه</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>مجموع شهریه‌ها</h3>
+            <div class="amount blue">
+                {{ total_tuition }} تومان
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>مجموع پرداختی‌ها</h3>
+            <div class="amount green">
+                {{ total_paid }} تومان
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>مانده شهریه</h3>
+            <div class="amount red">
+                {{ total_remaining }} تومان
+            </div>
+        </div>
+
+    </div>
+
+    <div class="status">
+        <h2>وضعیت پرداخت شهریه‌ها</h2>
+
+        <p class="green">تسویه‌شده: {{ paid_count }}</p>
+        <p class="blue">پرداخت ناقص: {{ partial_count }}</p>
+        <p class="red">پرداخت‌نشده: {{ unpaid_count }}</p>
+    </div>
+
+    <h2>جزئیات شهریه دانش‌آموزان</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>نام دانش‌آموز</th>
+                <th>درس</th>
+                <th>مبلغ کل شهریه</th>
+                <th>مبلغ پرداخت‌شده</th>
+                <th>مانده شهریه</th>
+                <th>وضعیت پرداخت</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for tuition in tuitions %}
+            <tr>
+                <td>
+                    {{ tuition.enrollment.student.first_name }}
+                    {{ tuition.enrollment.student.last_name }}
+                </td>
+
+                <td>
+                    {{ tuition.enrollment.course.title }}
+                </td>
+
+                <td>{{ tuition.total_amount }} تومان</td>
+
+                <td>{{ tuition.total_paid_amount }} تومان</td>
+
+                <td>{{ tuition.remaining_amount }} تومان</td>
+
+                <td>{{ tuition.payment_status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty">
+                    هنوز شهریه‌ای ثبت نشده است.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
